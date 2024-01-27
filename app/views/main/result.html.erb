@@ -1,0 +1,153 @@
+    <div class="d-flex align-items-stretch">
+      <!-- Sidebar Navigation-->
+      <nav id="sidebar">
+        <!-- Sidebar Header-->
+        <div class="sidebar-header d-flex align-items-center p-4"><%= image_tag asset_path("logo.png") ,:class => 'avatar shadow-0 img-fluid rounded-circle'%> 
+          <div class="ms-3 title">
+            <h1 class="h5 mb-1"><%= @hostIP %></h1>
+            <p class="text-sm text-gray-700 mb-0 lh-1"><%= @response["org"] %></p>
+          </div>
+        </div><span class="text-uppercase text-gray-600 text-xs mx-3 px-2 heading mb-2"><a class="sidebar-link" href="/"> Back to Search </a></span>
+                <section class="pt-0">
+                    <div class="container-fluid">
+            <div class="col ">
+              <div class="row">
+                  <% @response.except("data","ports","vulns","ip","tags").each do |key,value| %>
+                                <% unless value.nil?() %>    
+
+              <div class="row-2">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="col gy-3 align-items-center">
+                          <div class="row-2">
+                              <div class="ms-3">
+                                <h3 class="h5 mb-0"><%= key %></h3>
+                              </div>
+                          </div>
+                          <div class="row-2">
+                            <p class=" text-center mb-0 d-flex justify-content-between mb-0 text-sm  bg-dash-dark-3"> 
+                              <% if value.respond_to?("each") %>    
+                                <% value.each do |val| %>
+                              <%= val %>
+                                <% end %>
+                              <% else %>
+                                <%= value %>
+                              <% end %>
+
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+              </div>                              <% end %>
+
+                                <% end %>
+
+
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+      </nav>
+      <div class="page-content">
+            <!-- Page Header-->
+            <div class="bg-dash-dark-2 py-4">
+              <div class="container-fluid">
+                <h2 class="h5 mb-0">Open Ports</h2>
+              </div>
+            </div>
+        <section>
+          <div class="container-fluid">
+            <div class="row gy-4">
+                <div class="row text-center gy-3">
+                  <% @hostPorts.each do |port| %>
+                    <div class="col-lg-2 col-md-4"><a class="d-block p-4 text-white bg-info" href=#<%= port%>>
+                            <svg class="svg-icon svg-icon-sm sv-icon-heavy text-white">
+                              <use xlink:href="#time-1"> </use>
+                           </svg>
+                        <p class="text-sm d mb-0"><%= port %></p></a>
+                    </div>
+                  <% end %>
+                </div>
+            </div>
+          </div>
+        </section>
+        <section class="pt-0">
+                    <div class="container-fluid">
+            <div class="row gy-4">
+<% @serviceArray.each do |el|%>
+            <% unless el.nil?() %>    
+              <div class="col-lg-12" id=<%= el["port"]%>>
+                    <!-- User block-->
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="text-center">
+                          <h3 class="h5 mb-0"><%= el["port"] %> / <%= el["transport"]%></h3>
+                          <div class="d-inline-block py-1 px-4 rounded-pill bg-dash-dark-3 fw-light text-sm mb-4"><%= el["product"] %> <%= el["version"]%></div>
+                          <pre class=" d-flex  text-sm fw-light"><%= el["data"] %> </pre>
+                        </div>
+                                                            <% if el.key?("vulns") %>    
+                        <div class="d-inline-block py-1 px-4 rounded-pill bg-dash-dark-3 fw-light text-sm mb-4"> Vulnerabilities:</div>
+                        
+                        <% el["vulns"].each do |vuln,body|%>
+
+                          <p class="font-weight-bold text-center mb-0 d-flex  text-sm mb-0 "><%= vuln %>: </p>
+                          <% if body.key?("summary") %>    
+                            <p class="text-center mb-0 d-flex  text-sm mb-0 fw-light"><%= body["summary"] %> </p>
+                          <%end%>
+
+                        <%end%>
+
+                  <%end%>
+
+
+                      </div>
+                    </div>
+                  </div>
+                  <%end%>
+                  <%end%>
+
+                </div>
+              </div>
+
+        </section>
+        <!-- Page Footer-->
+        <footer class="position-absolute bottom-0 bg-dash-dark-2 text-white text-center py-3 w-100 text-xs" id="footer">
+          <div class="container-fluid text-center">
+            <!-- Please do not remove the backlink to us unless you support us at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+            <p class="mb-0 text-dash-gray">2024 &copy;. Design by <a href="https://bootstrapious.com">Bootstrapious</a>.</p>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <!-- Main File-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }
+      // this is set to BootstrapTemple website as you cannot 
+      // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
+      // while using file:// protocol
+      // pls don't forget to change to your domain :)
+      injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg'); 
+      
+      
+    </script>
+    <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">

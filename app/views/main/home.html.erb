@@ -1,0 +1,69 @@
+<div class="d-flex ">
+  <div class="page-content  form-page ">
+    <section class="pt-0"> 
+      <div class="container-fluid">
+        <div class="row gy-4 d-flex justify-content-center">
+          <div class="col-lg-6 d-flex justify-content-center">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="h4 mb-0">Who are we hacking today ?</h3>
+              </div>
+              <div class="card-body pt-0">
+                <%= form_with model: @form_data , url: search_path, :html => {:class => 'form-horizontal'} do |form| %>
+                  <div class="row gy-2 mb-4">
+                    <label class="col-sm-3 form-label" for="inputHorizontalElOne">Query</label>
+                    <div class="col-sm-9">
+                      <%= form.text_field :prompt, :html =>{:class =>'form-control'}  %> 
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-9 ms-auto">
+                      <%= form.submit   :class => 'btn btn-primary ' ,:value => 'Lookup'%>
+                    </div>
+                  </div>
+                  <% end  %>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+          </section>
+
+      <!-- Page Footer-->
+      <footer class="position-absolute bottom-0 bg-dash-dark-2 text-white text-center py-3 w-100 text-xs" id="footer">
+        <div class="container-fluid text-center">
+          <!-- Please do not remove the backlink to us unless you support us at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+          <p class="mb-0 text-dash-gray">2024 &copy;. Design by <a href="https://bootstrapious.com">Bootstrapious</a>.</p>
+        </div>
+      </footer>
+  </div>
+</div>
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }
+      // this is set to BootstrapTemple website as you cannot 
+      // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
+      // while using file:// protocol
+      // pls don't forget to change to your domain :)
+      injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg'); 
+      
+      
+    </script>
+    <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
